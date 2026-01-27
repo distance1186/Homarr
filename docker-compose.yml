@@ -11,5 +11,7 @@ services:
       - ./homarr/data:/data
     ports:
       - '7575:7575'
+    env_file:
+      - .env
     environment:
-      - TZ=America/New_York  # Change to your timezone
+      - TZ=${TZ:-America/New_York}
