@@ -18,6 +18,8 @@ This Homarr dashboard provides a unified interface to monitor and access all hom
 - Docker Compose v2 plugin or standalone docker-compose
 - Access to your local network services
 
+**Important for Windows Server 2022 Users:** Your system is currently running Windows containers. Homarr requires Linux containers. The recommended approach is to run Homarr in a Linux VM using Hyper-V. See [HYPERV_SETUP.md](HYPERV_SETUP.md) for step-by-step instructions, or [WINDOWS_SERVER_SETUP.md](WINDOWS_SERVER_SETUP.md) for alternative options.
+
 **Note:** On Windows, ensure Docker Desktop is running before executing docker commands.
 
 ## Quick Start
