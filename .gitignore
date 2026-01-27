@@ -1,0 +1,32 @@
+# Homarr data directories - these contain runtime data and user configurations
+homarr/data/
+homarr/configs/
+
+# Keep icons directory structure but ignore uploaded icons
+homarr/icons/*
+!homarr/icons/.gitkeep
+
+# Docker volumes and logs
+*.log
+
+# Environment files with sensitive data
+.env
+.env.local
+.env.*.local
+
+# Backup files
+*.backup
+*.bak
+homarr-backup-*.tar.gz
+
+# OS specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor directories
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
