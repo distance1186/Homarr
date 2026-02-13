@@ -28,3 +28,18 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=${TZ:-America/New_York}
+
+  radarr:
+    container_name: radarr
+    image: lscr.io/linuxserver/radarr:latest
+    restart: unless-stopped
+    volumes:
+      - ./radarr/config:/config
+      - ./downloads:/downloads
+      - ./media/movies:/movies
+    ports:
+      - '7878:7878'
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ:-America/New_York}
