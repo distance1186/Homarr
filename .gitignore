@@ -17,6 +17,7 @@ homarr/icons/*
 # Backup files
 *.backup
 *.bak
+*.zip
 homarr-backup-*.tar.gz
 
 # OS specific files

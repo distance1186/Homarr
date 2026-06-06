@@ -2,7 +2,7 @@
 
 **Project Created:** January 27, 2026  
 **Status:** ✅ Successfully Deployed and Running  
-**Dashboard URL:** http://172.16.10.216:7575
+**Dashboard URL:** http://<VM-IP>:7575
 
 ---
 
@@ -14,7 +14,7 @@ This project sets up a Homarr dashboard to monitor and manage home automation se
 
 ### Windows Server Environment
 - **Server:** Windows Server 2022 Datacenter (Build 20348.4529)
-- **Host:** KNHOST
+- **Host:** <SERVER-HOST>
 - **Resources:** 32 CPUs, 127.9GB RAM
 - **Docker:** 24.0.7 (Windows containers mode)
 
@@ -25,7 +25,7 @@ This project sets up a Homarr dashboard to monitor and manage home automation se
 - **Processors:** 2 CPUs
 - **Disk:** 40GB VHDX
 - **Network:** LAN-Local-External switch
-- **IP Address:** 172.16.10.216
+- **IP Address:** <VM-IP>
 - **VM Location:** E:\HyperV\VMs\Homarr-Ubuntu\
 - **ISO Used:** E:\ISO\ubuntu-24.04.3-live-server-amd64.iso
 - **Auto-start:** Enabled
@@ -93,7 +93,7 @@ VM Location: /home/homarr/Homarr/ (copy of this directory via SCP)
    - Auto-start: Enabled
 3. ✅ Configured VM with Ubuntu 24.04.3 LTS installation
 4. ✅ Set up SSH access (OpenSSH server installed)
-5. ✅ Obtained VM IP: 172.16.10.216
+5. ✅ Obtained VM IP: <VM-IP>
 
 ### Phase 4: Docker & Homarr Deployment
 1. ✅ Created automated Docker installation scripts
@@ -138,12 +138,12 @@ The Homarr dashboard is set up to monitor and provide quick access to:
 ## Key Commands & Access
 
 ### Accessing Homarr Dashboard
-- **URL:** http://172.16.10.216:7575
+- **URL:** http://<VM-IP>:7575
 - Access from any machine on the network
 
 ### SSH into VM
 ```powershell
-ssh homarr@172.16.10.216
+ssh homarr@<VM-IP>
 ```
 
 ### Managing Homarr Container (from within VM)
@@ -282,7 +282,7 @@ Get-VMNetworkAdapter -VMName "Homarr-Ubuntu"
 
 ### Enhancements (Future)
 - [ ] Set up automated Homarr configuration backups
-- [ ] Configure static IP for VM (currently DHCP: 172.16.10.216)
+- [ ] Configure static IP for VM (currently DHCP: <VM-IP>)
 - [ ] Set up reverse proxy (nginx/traefik) if adding more services
 - [ ] Add custom themes to Homarr
 - [ ] Configure automated VM backups
@@ -297,7 +297,7 @@ Get-VMNetworkAdapter -VMName "Homarr-Ubuntu"
 - .env file contains credentials - never commit to git
 - homarr/configs may contain API tokens - gitignored
 - SSH password authentication used (consider SSH keys for automation)
-- Homarr accessible on local network only (172.16.10.216:7575)
+- Homarr accessible on local network only (<VM-IP>:7575)
 
 ### Maintenance Schedule
 - **Weekly:** Review Homarr dashboard, check service status
@@ -317,7 +317,7 @@ Get-VMNetworkAdapter -VMName "Homarr-Ubuntu"
 
 ### Network Configuration
 - **VM Network Adapter:** LAN-Local-External switch
-- **IP Assignment:** DHCP (172.16.10.216)
+- **IP Assignment:** DHCP (<VM-IP>)
 - **MAC Address:** 00155D0ABE0E
 - **Firewall:** Port 7575 open on VM
 
@@ -353,9 +353,9 @@ Auto-Start: Enabled
 ## Contact & Support
 
 ### Project Resources
-- **Dashboard:** http://172.16.10.216:7575
+- **Dashboard:** http://<VM-IP>:7575
 - **VM Console:** `vmconnect.exe localhost Homarr-Ubuntu`
-- **SSH Access:** `ssh homarr@172.16.10.216`
+- **SSH Access:** `ssh homarr@<VM-IP>`
 
 ### External Resources
 - **Homarr Documentation:** https://homarr.dev

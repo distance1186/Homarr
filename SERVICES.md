@@ -1,27 +1,21 @@
-# Services to Track in Homarr
+# Services
 
-This document lists all the services that will be monitored through the Homarr dashboard.
+Running services tracked in Homarr at `http://<VM-IP>:7575`.
 
-## Network & Security
-- **UniFi Dream Machine Pro**
-  - Network Management
-  - UniFi Protect (Camera/Security)
+See `HOW_TO_ADD_SERVICE.md` for the workflow to add new services.
 
-## Media Services
-- **Plex Media Server**
+## Docker Services (auto-visible in Docker widget)
 
-## Gaming
-- Game Servers (to be configured)
+| Service   | Port | Image                                    |
+|-----------|------|------------------------------------------|
+| Homarr    | 7575 | ghcr.io/homarr-labs/homarr:latest        |
+| Radarr    | 7878 | lscr.io/linuxserver/radarr:latest        |
+| Overseerr | 5055 | lscr.io/linuxserver/overseerr:latest     |
 
-## Infrastructure
-- **Docker** (Container Management)
-- File Sharing Servers
+## Non-Docker Services (add manually in Homarr UI once)
 
-## Configuration Notes
-After starting Homarr, you'll need to add each service manually through the web interface at http://localhost:7575
-
-You can add widgets for:
-- Service status monitoring
-- Quick links to service dashboards
-- System resource monitoring
-- Custom integrations via API
+| Service                 | URL                        | Category          |
+|-------------------------|----------------------------|-------------------|
+| Plex Media Server       | http://<SERVER-HOST>:32400        | Media             |
+| UniFi Dream Machine Pro | https://<UDM-IP>           | Network & Security|
+| <SERVER-HOST> Windows Server   | rdp://<SERVER-HOST>               | Infrastructure    |

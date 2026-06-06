@@ -62,7 +62,7 @@ services:
 
 ### Access URLs
 
-- **From anywhere on network:** http://172.16.10.216:7878
+- **From anywhere on network:** http://<VM-IP>:7878
 - **From Ubuntu VM:** http://localhost:7878
 
 ---
@@ -75,7 +75,7 @@ From Windows PowerShell:
 
 ```powershell
 # Transfer the updated docker-compose.yml to the VM
-scp D:\Projects\Homarr\docker-compose.yml homarr@172.16.10.216:~/Homarr/
+scp D:\Projects\Homarr\docker-compose.yml homarr@<VM-IP>:~/Homarr/
 ```
 
 ### Step 2: Create Radarr Directories
@@ -83,7 +83,7 @@ scp D:\Projects\Homarr\docker-compose.yml homarr@172.16.10.216:~/Homarr/
 SSH into the VM:
 
 ```powershell
-ssh homarr@172.16.10.216
+ssh homarr@<VM-IP>
 ```
 
 Then in the VM:
@@ -121,7 +121,7 @@ You should see `homarr`, `overseerr`, and `radarr` containers running.
 
 ### Access Radarr
 
-Open in your browser: http://172.16.10.216:7878
+Open in your browser: http://<VM-IP>:7878
 
 ### Setup Wizard
 
@@ -140,15 +140,15 @@ Open in your browser: http://172.16.10.216:7878
 
 ---
 
-## Connecting to KNHOST Plex/Movies Folder
+## Connecting to <SERVER-HOST> Plex/Movies Folder
 
-**Important**: Radarr is running in a Docker container on the Ubuntu VM (172.16.10.216), but your movies need to end up on KNHOST (Windows Server) at `D:\Movies` for Plex to see them.
+**Important**: Radarr is running in a Docker container on the Ubuntu VM (<VM-IP>), but your movies need to end up on <SERVER-HOST> (Windows Server) at `D:\Movies` for Plex to see them.
 
 ### Option 1: SMB/CIFS Mount (Recommended)
 
-Mount KNHOST's D:\Movies folder to the Ubuntu VM:
+Mount <SERVER-HOST>'s D:\Movies folder to the Ubuntu VM:
 
-**On Windows Server (KNHOST):**
+**On Windows Server (<SERVER-HOST>):**
 
 ```powershell
 # Create an SMB share for the Movies folder
@@ -163,16 +163,16 @@ New-SmbShare -Name "Downloads" -Path "D:\To be sorted" -FullAccess "Everyone"
 sudo apt-get install cifs-utils -y
 
 # Create mount points
-sudo mkdir -p /mnt/knhost-movies
-sudo mkdir -p /mnt/knhost-downloads
+sudo mkdir -p /mnt/<SERVER-HOST>-movies
+sudo mkdir -p /mnt/<SERVER-HOST>-downloads
 
-# Mount the shares (replace <KNHOST-IP> with actual IP)
-sudo mount -t cifs //<KNHOST-IP>/Movies /mnt/knhost-movies -o username=Administrator,uid=1000,gid=1000
-sudo mount -t cifs //<KNHOST-IP>/Downloads /mnt/knhost-downloads -o username=Administrator,uid=1000,gid=1000
+# Mount the shares (replace <SERVER-HOST-IP> with actual IP)
+sudo mount -t cifs //<SERVER-HOST-IP>/Movies /mnt/<SERVER-HOST>-movies -o username=Administrator,uid=1000,gid=1000
+sudo mount -t cifs //<SERVER-HOST-IP>/Downloads /mnt/<SERVER-HOST>-downloads -o username=Administrator,uid=1000,gid=1000
 
 # Make mounts persistent (add to /etc/fstab)
-echo "//<KNHOST-IP>/Movies /mnt/knhost-movies cifs username=Administrator,password=<PASSWORD>,uid=1000,gid=1000 0 0" | sudo tee -a /etc/fstab
-echo "//<KNHOST-IP>/Downloads /mnt/knhost-downloads cifs username=Administrator,password=<PASSWORD>,uid=1000,gid=1000 0 0" | sudo tee -a /etc/fstab
+echo "//<SERVER-HOST-IP>/Movies /mnt/<SERVER-HOST>-movies cifs username=Administrator,password=<PASSWORD>,uid=1000,gid=1000 0 0" | sudo tee -a /etc/fstab
+echo "//<SERVER-HOST-IP>/Downloads /mnt/<SERVER-HOST>-downloads cifs username=Administrator,password=<PASSWORD>,uid=1000,gid=1000 0 0" | sudo tee -a /etc/fstab
 ```
 
 Then update docker-compose.yml volumes:
@@ -181,25 +181,25 @@ Then update docker-compose.yml volumes:
 radarr:
   volumes:
     - ./radarr/config:/config
-    - /mnt/knhost-downloads:/downloads
-    - /mnt/knhost-movies:/movies
+    - /mnt/<SERVER-HOST>-downloads:/downloads
+    - /mnt/<SERVER-HOST>-movies:/movies
 ```
 
 ### Option 2: Post-Processing Script
 
-Create a script that automatically moves completed downloads from VM to KNHOST:
+Create a script that automatically moves completed downloads from VM to <SERVER-HOST>:
 
 ```bash
 #!/bin/bash
-# ~/Homarr/sync-to-knhost.sh
-rsync -avz ~/Homarr/media/movies/ Administrator@<KNHOST-IP>:/d/Movies/
+# ~/Homarr/sync-to-<SERVER-HOST>.sh
+rsync -avz ~/Homarr/media/movies/ Administrator@<SERVER-HOST-IP>:/d/Movies/
 ```
 
 Run this as a cron job or manually after downloads complete.
 
-### Option 3: Run Radarr Directly on KNHOST
+### Option 3: Run Radarr Directly on <SERVER-HOST>
 
-If you prefer, you can install Radarr on KNHOST Windows Server instead of in the VM. This gives direct access to D:\Movies.
+If you prefer, you can install Radarr on <SERVER-HOST> Windows Server instead of in the VM. This gives direct access to D:\Movies.
 
 ---
 
@@ -294,7 +294,7 @@ Add Jackett to docker-compose.yml:
       - TZ=${TZ:-America/New_York}
 ```
 
-Access Jackett at: http://172.16.10.216:9117
+Access Jackett at: http://<VM-IP>:9117
 
 Then add indexers in Jackett and connect Radarr to Jackett.
 
@@ -337,7 +337,7 @@ This means Radarr will:
 1. Settings → Services → Radarr
 2. **Enable:** Toggle ON
 3. **Server Name:** Radarr
-4. **Hostname/IP:** `172.16.10.216`
+4. **Hostname/IP:** `<VM-IP>`
 5. **Port:** 7878
 6. **API Key:** (paste from Radarr)
 7. **Base URL:** Leave empty
@@ -353,7 +353,7 @@ This means Radarr will:
 
 ### Manual Movie Add
 
-1. Go to Radarr: http://172.16.10.216:7878
+1. Go to Radarr: http://<VM-IP>:7878
 2. Click "Add New Movie"
 3. Search for a movie
 4. Select quality profile
@@ -364,7 +364,7 @@ This means Radarr will:
 
 ### Via Overseerr Request
 
-1. Go to Overseerr: http://172.16.10.216:5055
+1. Go to Overseerr: http://<VM-IP>:5055
 2. Search for a movie
 3. Click "Request"
 4. Submit request
@@ -386,10 +386,10 @@ On Ubuntu VM:
 │   └── config/          # Radarr configuration
 ├── downloads/           # Temporary download location
 └── media/
-    └── movies/          # Final movie location (or mounted from KNHOST)
+    └── movies/          # Final movie location (or mounted from <SERVER-HOST>)
 ```
 
-On KNHOST (Windows Server):
+On <SERVER-HOST> (Windows Server):
 ```
 D:\Movies\               # Plex library path
 D:\To be sorted\         # Alternative download staging area
@@ -467,12 +467,12 @@ Activity → History:
 
 ### Add Radarr to Homarr
 
-1. Go to Homarr: http://172.16.10.216:7575
+1. Go to Homarr: http://<VM-IP>:7575
 2. Click "Edit Mode"
 3. Click "Add Service"
 4. Configure:
    - **Name:** Radarr
-   - **URL:** `http://172.16.10.216:7878`
+   - **URL:** `http://<VM-IP>:7878`
    - **Icon:** Search "Radarr"
    - **Category:** Media
 
@@ -518,11 +518,11 @@ services:
 ```
 
 Access URLs:
-- Homarr: http://172.16.10.216:7575
-- Overseerr: http://172.16.10.216:5055
-- Radarr: http://172.16.10.216:7878
-- Jackett: http://172.16.10.216:9117
-- qBittorrent: http://172.16.10.216:8080
+- Homarr: http://<VM-IP>:7575
+- Overseerr: http://<VM-IP>:5055
+- Radarr: http://<VM-IP>:7878
+- Jackett: http://<VM-IP>:9117
+- qBittorrent: http://<VM-IP>:8080
 
 ---
 
@@ -531,7 +531,7 @@ Access URLs:
 ### Update Radarr
 
 ```bash
-ssh homarr@172.16.10.216
+ssh homarr@<VM-IP>
 cd ~/Homarr
 docker compose pull radarr
 docker compose up -d radarr
@@ -597,7 +597,7 @@ chmod -R 755 media/movies
 **Problem:** File in D:\Movies but not in Plex
 
 **Solutions:**
-1. Verify file is in correct location on KNHOST
+1. Verify file is in correct location on <SERVER-HOST>
 2. Check file naming matches Plex requirements
 3. Manually trigger Plex library scan
 4. Check Plex logs for import errors
@@ -621,7 +621,7 @@ Always enable authentication in Radarr:
 
 ### Network Access
 
-- Radarr accessible only on local network (172.16.10.216)
+- Radarr accessible only on local network (<VM-IP>)
 - Do not expose to internet without VPN
 - Use authentication even on local network
 
@@ -679,12 +679,12 @@ Radarr will automatically add and download new movies from these lists.
 
 ### Access Radarr
 ```
-http://172.16.10.216:7878
+http://<VM-IP>:7878
 ```
 
 ### Start/Stop/Restart
 ```bash
-ssh homarr@172.16.10.216
+ssh homarr@<VM-IP>
 cd ~/Homarr
 
 # Start
@@ -702,7 +702,7 @@ docker compose logs -f radarr
 
 ### Update
 ```bash
-ssh homarr@172.16.10.216
+ssh homarr@<VM-IP>
 cd ~/Homarr
 docker compose pull radarr
 docker compose up -d radarr
@@ -716,7 +716,7 @@ After Radarr is running:
 
 1. ☐ Deploy Radarr container
 2. ☐ Complete initial setup wizard
-3. ☐ Configure root folder (/movies or KNHOST mount)
+3. ☐ Configure root folder (/movies or <SERVER-HOST> mount)
 4. ☐ Add download client (qBittorrent recommended)
 5. ☐ Add indexers (Jackett recommended)
 6. ☐ Configure quality profiles
@@ -733,13 +733,13 @@ After Radarr is running:
 - **Radarr Docs:** https://wiki.servarr.com/radarr
 - **Docker Image:** https://github.com/linuxserver/docker-radarr
 - **Your Setup:**
-  - VM: 172.16.10.216
+  - VM: <VM-IP>
   - Port: 7878
-  - Movies: D:\Movies (KNHOST) or ~/Homarr/media/movies (VM)
+  - Movies: D:\Movies (<SERVER-HOST>) or ~/Homarr/media/movies (VM)
 
 ---
 
 **Created:** February 13, 2026  
-**Radarr URL:** http://172.16.10.216:7878  
+**Radarr URL:** http://<VM-IP>:7878  
 **Status:** Ready to deploy  
 **Part of:** Full Plex Automation Stack

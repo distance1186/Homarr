@@ -1,6 +1,6 @@
 # Homarr Services Configuration Guide
 
-This guide will help you add all your services to the Homarr dashboard at http://172.16.10.216:7575
+This guide will help you add all your services to the Homarr dashboard at http://<VM-IP>:7575
 
 ---
 
@@ -8,13 +8,13 @@ This guide will help you add all your services to the Homarr dashboard at http:/
 
 ### 1. Plex Media Server
 
-**Access URL:** http://KNHOST:32400/web
+**Access URL:** http://<SERVER-HOST>:32400/web
 - Or use the server's actual IP: http://172.16.10.x:32400/web
 
 **Configuration in Homarr:**
 1. Click "Add Service" or "+"
 2. **Name:** Plex Media Server
-3. **URL:** `http://KNHOST:32400/web` (replace KNHOST with actual IP if needed)
+3. **URL:** `http://<SERVER-HOST>:32400/web` (replace <SERVER-HOST> with actual IP if needed)
 4. **Icon:** Search "Plex" (Homarr has built-in icon)
 5. **Category:** Media
 
@@ -52,7 +52,7 @@ This guide will help you add all your services to the Homarr dashboard at http:/
 - Connected devices
 
 **Security Notes:**
-- KNHOST is currently the most targeted machine in IPS logs
+- <SERVER-HOST> is currently the most targeted machine in IPS logs
 - Review IPS logs regularly via UniFi interface
 - Consider enabling IPS Prevention mode (currently in Detection only)
 
@@ -64,11 +64,11 @@ This guide will help you add all your services to the Homarr dashboard at http:/
 
 ### 3. MCP Gateway (IIS Gateway)
 
-**Access URL:** http://KNHOST or https://KNHOST
+**Access URL:** http://<SERVER-HOST> or https://<SERVER-HOST>
 
 **Configuration in Homarr:**
 1. **Name:** MCP Gateway
-2. **URL:** `http://KNHOST` or use server IP
+2. **URL:** `http://<SERVER-HOST>` or use server IP
 3. **Icon:** Search "IIS" or "Server"
 4. **Category:** Infrastructure
 
@@ -91,7 +91,7 @@ This guide will help you add all your services to the Homarr dashboard at http:/
 
 **Configuration in Homarr:**
 1. **Name:** Docker (Homarr VM)
-2. **URL:** `http://172.16.10.216` (or specific container ports)
+2. **URL:** `http://<VM-IP>` (or specific container ports)
 3. **Icon:** Search "Docker"
 4. **Category:** Infrastructure
 
@@ -106,19 +106,19 @@ This guide will help you add all your services to the Homarr dashboard at http:/
 - Shows running/stopped containers, resource usage
 
 To enable Docker monitoring in Homarr:
-1. SSH to VM: `ssh homarr@172.16.10.216`
+1. SSH to VM: `ssh homarr@<VM-IP>`
 2. Ensure docker socket is accessible
 3. In Homarr, add Docker widget pointing to VM
 
 ---
 
-### 5. Windows Server (KNHOST)
+### 5. Windows Server (<SERVER-HOST>)
 
-**Access URL:** http://KNHOST (RDP or management interfaces)
+**Access URL:** http://<SERVER-HOST> (RDP or management interfaces)
 
 **Configuration in Homarr:**
-1. **Name:** KNHOST (Windows Server)
-2. **URL:** `rdp://KNHOST` or management URL
+1. **Name:** <SERVER-HOST> (Windows Server)
+2. **URL:** `rdp://<SERVER-HOST>` or management URL
 3. **Icon:** Search "Windows" or "Server"
 4. **Category:** Infrastructure
 
@@ -138,13 +138,13 @@ To enable Docker monitoring in Homarr:
 ### 6. File Shares / Network Storage
 
 **Access URLs:**
-- Movies: `\\KNHOST\D$\Movies` or file browser URL
-- TV Shows: `\\KNHOST\D$\TV`
-- To be sorted: `\\KNHOST\D$\To be sorted`
+- Movies: `\\<SERVER-HOST>\D$\Movies` or file browser URL
+- TV Shows: `\\<SERVER-HOST>\D$\TV`
+- To be sorted: `\\<SERVER-HOST>\D$\To be sorted`
 
 **Configuration in Homarr:**
 1. **Name:** Media Storage
-2. **URL:** `file://KNHOST/D$/Movies` or web file manager if available
+2. **URL:** `file://<SERVER-HOST>/D$/Movies` or web file manager if available
 3. **Icon:** Search "Folder" or "Storage"
 4. **Category:** Storage
 
@@ -167,7 +167,7 @@ To enable Docker monitoring in Homarr:
 - Media Storage
 
 **Infrastructure**
-- KNHOST (Windows Server)
+- <SERVER-HOST> (Windows Server)
 - MCP Gateway
 - Docker (Homarr VM)
 
@@ -181,7 +181,7 @@ To enable Docker monitoring in Homarr:
 - Docker
 
 **Support Services** (Second row)
-- KNHOST Server
+- <SERVER-HOST> Server
 - MCP Gateway
 - Media Storage
 
@@ -207,7 +207,7 @@ To enable Docker monitoring in Homarr:
 
 ### Phase 1: Add Basic Services (5-10 minutes)
 
-1. Open Homarr: http://172.16.10.216:7575
+1. Open Homarr: http://<VM-IP>:7575
 2. Log in with your account
 3. Click "Edit Mode" or Settings icon
 4. Add services one by one using "Add Service" button
@@ -256,7 +256,7 @@ To enable Docker monitoring in Homarr:
 ## Security Considerations
 
 ### Internal Network Only
-- Homarr is accessible only on local network (172.16.10.216)
+- Homarr is accessible only on local network (<VM-IP>)
 - No external exposure (good for security)
 - Access from any device on your network
 
@@ -265,7 +265,7 @@ To enable Docker monitoring in Homarr:
 - Don't share dashboard publicly
 - Regular password rotation recommended
 
-### KNHOST Security Notes
+### <SERVER-HOST> Security Notes
 - Currently most targeted machine in network
 - Monitor UniFi IPS alerts regularly
 - Consider enabling IPS Prevention mode
@@ -283,7 +283,7 @@ To enable Docker monitoring in Homarr:
 
 ### Widget Not Updating
 1. Verify API token is correct
-2. Check Homarr logs: `ssh homarr@172.16.10.216 "cd ~/Homarr && docker compose logs"`
+2. Check Homarr logs: `ssh homarr@<VM-IP> "cd ~/Homarr && docker compose logs"`
 3. Refresh dashboard cache
 4. Re-add widget if needed
 
@@ -336,24 +336,24 @@ To enable Docker monitoring in Homarr:
 
 ### Access Homarr Dashboard
 ```
-http://172.16.10.216:7575
+http://<VM-IP>:7575
 ```
 
 ### SSH to Homarr VM
 ```powershell
-ssh homarr@172.16.10.216
+ssh homarr@<VM-IP>
 ```
 
 ### View Homarr Logs
 ```bash
-ssh homarr@172.16.10.216
+ssh homarr@<VM-IP>
 cd ~/Homarr
 docker compose logs -f
 ```
 
 ### Restart Homarr
 ```bash
-ssh homarr@172.16.10.216
+ssh homarr@<VM-IP>
 cd ~/Homarr
 docker compose restart
 ```
@@ -380,5 +380,5 @@ Get-VM -Name "Homarr-Ubuntu"
 ---
 
 **Created:** January 28, 2026  
-**Dashboard URL:** http://172.16.10.216:7575  
-**For:** KNHOST Windows Server 2022
+**Dashboard URL:** http://<VM-IP>:7575  
+**For:** <SERVER-HOST> Windows Server 2022

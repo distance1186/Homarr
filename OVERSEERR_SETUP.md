@@ -43,7 +43,7 @@ services:
 
 ### Access URLs
 
-- **From anywhere on network:** http://172.16.10.216:5055
+- **From anywhere on network:** http://<VM-IP>:5055
 - **From Ubuntu VM:** http://localhost:5055
 
 ---
@@ -56,7 +56,7 @@ From Windows PowerShell:
 
 ```powershell
 # Transfer the updated docker-compose.yml to the VM
-scp D:\Projects\Homarr\docker-compose.yml homarr@172.16.10.216:~/Homarr/
+scp D:\Projects\Homarr\docker-compose.yml homarr@<VM-IP>:~/Homarr/
 ```
 
 ### Step 2: Create Overseerr Directory
@@ -64,7 +64,7 @@ scp D:\Projects\Homarr\docker-compose.yml homarr@172.16.10.216:~/Homarr/
 SSH into the VM and create the config directory:
 
 ```powershell
-ssh homarr@172.16.10.216
+ssh homarr@<VM-IP>
 ```
 
 Then in the VM:
@@ -100,7 +100,7 @@ You should see both `homarr` and `overseerr` containers running.
 
 ### Access Overseerr
 
-Open in your browser: http://172.16.10.216:5055
+Open in your browser: http://<VM-IP>:5055
 
 ### Setup Wizard
 
@@ -111,7 +111,7 @@ Open in your browser: http://172.16.10.216:5055
 
 2. **Configure Plex Server**
    - Overseerr will auto-detect your Plex server
-   - Select your Plex server (KNHOST)
+   - Select your Plex server (<SERVER-HOST>)
    - Choose which Plex libraries to sync:
      - Movies library (D:\Movies)
      - TV Shows library (D:\TV)
@@ -139,13 +139,13 @@ Open in your browser: http://172.16.10.216:5055
 
 ### What You Need
 
-- **Plex Server:** Already running on KNHOST (port 32400)
+- **Plex Server:** Already running on <SERVER-HOST> (port 32400)
 - **Plex Token:** Obtained during Overseerr setup (handled automatically when you sign in with Plex)
 - **Library Access:** Overseerr needs access to your Plex libraries
 
 ### Configuration
 
-1. **Plex Server URL:** `http://KNHOST:32400` (or use server IP)
+1. **Plex Server URL:** `http://<SERVER-HOST>:32400` (or use server IP)
 2. **Libraries to Sync:**
    - Movies (includes your 15 anime movies)
    - TV Shows (includes your 9 anime TV shows)
@@ -257,12 +257,12 @@ Settings → Notifications → Email:
 
 ### Add Overseerr to Homarr Dashboard
 
-1. Go to Homarr: http://172.16.10.216:7575
+1. Go to Homarr: http://<VM-IP>:7575
 2. Click "Edit Mode"
 3. Click "Add Service"
 4. Configure:
    - **Name:** Overseerr
-   - **URL:** `http://172.16.10.216:5055`
+   - **URL:** `http://<VM-IP>:5055`
    - **Icon:** Search "Overseerr"
    - **Category:** Media
 
@@ -357,7 +357,7 @@ For fully automated requests, you can add:
 ### Update Overseerr
 
 ```bash
-ssh homarr@172.16.10.216
+ssh homarr@<VM-IP>
 cd ~/Homarr
 docker compose pull overseerr
 docker compose up -d overseerr
@@ -366,7 +366,7 @@ docker compose up -d overseerr
 ### View Logs
 
 ```bash
-ssh homarr@172.16.10.216
+ssh homarr@<VM-IP>
 cd ~/Homarr
 docker compose logs -f overseerr
 ```
@@ -374,7 +374,7 @@ docker compose logs -f overseerr
 ### Restart Overseerr
 
 ```bash
-ssh homarr@172.16.10.216
+ssh homarr@<VM-IP>
 cd ~/Homarr
 docker compose restart overseerr
 ```
@@ -382,7 +382,7 @@ docker compose restart overseerr
 ### Backup Configuration
 
 ```bash
-ssh homarr@172.16.10.216
+ssh homarr@<VM-IP>
 cd ~/Homarr
 tar -czf overseerr-backup-$(date +%Y%m%d).tar.gz overseerr/
 ```
@@ -393,8 +393,8 @@ tar -czf overseerr-backup-$(date +%Y%m%d).tar.gz overseerr/
 
 ### Can't Connect to Plex
 
-- Verify Plex is running on KNHOST
-- Check Plex URL is correct: `http://KNHOST:32400` (replace with IP if needed)
+- Verify Plex is running on <SERVER-HOST>
+- Check Plex URL is correct: `http://<SERVER-HOST>:32400` (replace with IP if needed)
 - Ensure Plex is accessible from the Ubuntu VM network
 - Verify Plex token is valid
 
@@ -439,7 +439,7 @@ docker compose up -d overseerr
 
 ### Network Access
 
-- Overseerr is on internal network only (172.16.10.216)
+- Overseerr is on internal network only (<VM-IP>)
 - Not exposed to internet (good for security)
 - Access from any device on your local network
 
@@ -462,12 +462,12 @@ docker compose up -d overseerr
 
 ### Access Overseerr
 ```
-http://172.16.10.216:5055
+http://<VM-IP>:5055
 ```
 
 ### Start/Stop/Restart
 ```bash
-ssh homarr@172.16.10.216
+ssh homarr@<VM-IP>
 cd ~/Homarr
 
 # Start
@@ -485,7 +485,7 @@ docker compose logs -f overseerr
 
 ### Update
 ```bash
-ssh homarr@172.16.10.216
+ssh homarr@<VM-IP>
 cd ~/Homarr
 docker compose pull overseerr
 docker compose up -d overseerr
@@ -514,12 +514,12 @@ After Overseerr is running:
 - **Overseerr Docs:** https://docs.overseerr.dev
 - **Docker Image:** https://github.com/linuxserver/docker-overseerr
 - **Your Setup:**
-  - VM: 172.16.10.216
+  - VM: <VM-IP>
   - Port: 5055
-  - Plex: KNHOST:32400
+  - Plex: <SERVER-HOST>:32400
 
 ---
 
 **Created:** February 13, 2026  
-**Overseerr URL:** http://172.16.10.216:5055  
+**Overseerr URL:** http://<VM-IP>:5055  
 **Status:** Ready to deploy
